@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d6621fd4-5cc4-4e2f-a44f-739d99d21924" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="dwpoc2Flow" doc:id="ad82e425-da3b-4f9a-abee-46d429ae59ea" >
+		<http:listener doc:name="Listener" doc:id="59a152a5-7159-47a8-b6fb-0156db0788dc" config-ref="HTTP_Listener_config" path="/akram"/>
+		<ee:transform doc:name="Transform Message" doc:id="a3a6d2f1-d65b-4277-9cd6-2920279af5a0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[1,2,3,4,5,6,7,9] filter isEven($)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="df94d1e0-16d3-4d50-98a2-543208a4f50d" message="#[payload]"/>
+	</flow>
+</mule>
